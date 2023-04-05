@@ -23,6 +23,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5.Service", "5.Service", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomecChallange.Service", "DomecChallange.Service\DomecChallange.Service.csproj", "{938400A5-B160-4B63-822A-7652265E34B4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "6.Dtos", "6.Dtos", "{348E203A-EDBB-4B12-A659-1B6647BECD90}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "7.Mapper", "7.Mapper", "{649E2169-3047-4A26-A43D-D5CF254E6B1F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomecChallange.Dtos", "DomecChallange.Dtos\DomecChallange.Dtos.csproj", "{5203734F-4FBB-42E1-AB4C-104B6151E903}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +55,10 @@ Global
 		{938400A5-B160-4B63-822A-7652265E34B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{938400A5-B160-4B63-822A-7652265E34B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{938400A5-B160-4B63-822A-7652265E34B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5203734F-4FBB-42E1-AB4C-104B6151E903}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5203734F-4FBB-42E1-AB4C-104B6151E903}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5203734F-4FBB-42E1-AB4C-104B6151E903}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5203734F-4FBB-42E1-AB4C-104B6151E903}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -59,6 +69,7 @@ Global
 		{90E8347C-8855-40E3-A251-D9F52AB502E6} = {5ADF21A1-BB84-4A63-8BB7-FE9B8BF71A5B}
 		{4BAC5CAA-5BE8-444C-8A17-943EDBB60625} = {99ECF09B-E434-40F1-B582-2F1D1F933D7B}
 		{938400A5-B160-4B63-822A-7652265E34B4} = {CF85AEAF-182D-4A48-923D-85C918F3C4C9}
+		{5203734F-4FBB-42E1-AB4C-104B6151E903} = {348E203A-EDBB-4B12-A659-1B6647BECD90}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {ADA64599-B546-45B2-B3DD-DD731C1077F1}
