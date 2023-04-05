@@ -11,7 +11,7 @@ namespace DomecChallange.Data.Context
     public class DomecChallangeDbContext: DbContext
     {
         #region Dbsets
-        public DbSet<Product> Products { get; set; }
+        public DbSet<Product> Products => Set<Product>();
         #endregion
         public DomecChallangeDbContext(DbContextOptions<DomecChallangeDbContext> options) : base(options)
         {
