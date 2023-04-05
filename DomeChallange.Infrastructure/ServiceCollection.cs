@@ -1,4 +1,6 @@
 ﻿using DomecChallange.Data.Context;
+using DomecChallange.Service.Interfaces;
+using DomecChallange.Service.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +19,7 @@ namespace DomeChallange.Infrastructure
             services.AddDbContext<DomecChallangeDbContext>(options =>
                 options.UseInMemoryDatabase(databaseName: "DomecChallangeSystemContext"));
             services.AddScoped<DomecChallangeDbContext>();
+            services.AddScoped<IProductService, ProductService>();
         }
     }
 }
