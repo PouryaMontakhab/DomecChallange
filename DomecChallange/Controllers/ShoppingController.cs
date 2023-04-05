@@ -34,10 +34,10 @@ namespace DomecChallange.Controllers
                 Quantity = a.Quantity,
             }).ToListAsync());
         }
-        [HttpGet("{id}", Name = nameof(GetProduct))]
-        public async Task<ActionResult<ProductDto>> GetProduct(Guid uniqueId)
+        [HttpGet("{name}", Name = nameof(GetProductByName))]
+        public async Task<ActionResult<ProductDto>> GetProductByName(string name)
         {
-            var product = await _productService.GetAsync(uniqueId);
+            var product = await _productService.GetAsync(name);
             if (product == null) return NotFound();
             return Ok(new ProductDto
             {
@@ -64,7 +64,7 @@ namespace DomecChallange.Controllers
                 Name = result.ReturnModel.Name,
                 Quantity = result.ReturnModel.Quantity,
             };
-            return CreatedAtRoute(nameof(GetProduct), new { id = result.ReturnId }, returnModel);
+            return CreatedAtRoute(nameof(GetProductByName), new { name = result.ReturnModel.Name }, returnModel);
 
         }
         [HttpPut]
@@ -85,7 +85,7 @@ namespace DomecChallange.Controllers
                 Name = result.ReturnModel.Name,
                 Quantity = result.ReturnModel.Quantity,
             };
-            return CreatedAtRoute(nameof(GetProduct), new { id = result.ReturnId }, returnModel);
+            return CreatedAtRoute(nameof(GetProductByName), new { name = result.ReturnModel.Name }, returnModel);
         }
         [HttpDelete]
         public async Task<IActionResult> Delete(Guid uniqueId)
