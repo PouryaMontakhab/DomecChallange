@@ -19,6 +19,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.Infrastructure", "4.Infra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomeChallange.Infrastructure", "DomeChallange.Infrastructure\DomeChallange.Infrastructure.csproj", "{4BAC5CAA-5BE8-444C-8A17-943EDBB60625}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5.Service", "5.Service", "{CF85AEAF-182D-4A48-923D-85C918F3C4C9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomecChallange.Service", "DomecChallange.Service\DomecChallange.Service.csproj", "{938400A5-B160-4B63-822A-7652265E34B4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +45,10 @@ Global
 		{4BAC5CAA-5BE8-444C-8A17-943EDBB60625}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4BAC5CAA-5BE8-444C-8A17-943EDBB60625}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4BAC5CAA-5BE8-444C-8A17-943EDBB60625}.Release|Any CPU.Build.0 = Release|Any CPU
+		{938400A5-B160-4B63-822A-7652265E34B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{938400A5-B160-4B63-822A-7652265E34B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{938400A5-B160-4B63-822A-7652265E34B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{938400A5-B160-4B63-822A-7652265E34B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -50,6 +58,7 @@ Global
 		{953D3E65-94D8-4539-B115-641B34C3D001} = {6053E6CA-F89D-4EB7-AE0C-70505ECFC7B9}
 		{90E8347C-8855-40E3-A251-D9F52AB502E6} = {5ADF21A1-BB84-4A63-8BB7-FE9B8BF71A5B}
 		{4BAC5CAA-5BE8-444C-8A17-943EDBB60625} = {99ECF09B-E434-40F1-B582-2F1D1F933D7B}
+		{938400A5-B160-4B63-822A-7652265E34B4} = {CF85AEAF-182D-4A48-923D-85C918F3C4C9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {ADA64599-B546-45B2-B3DD-DD731C1077F1}
