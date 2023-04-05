@@ -1,4 +1,5 @@
 ﻿using DomecChallange.Domain.Entities;
+using DomecChallange.Dtos.Codes;
 using DomecChallange.Dtos.ProdcutDtos;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace DomecChallange.Service.Interfaces
         IQueryable<Product> GetAll();
         Task<Product> GetAsync(Guid uniqueId);
         Task<Product> GetAsync(int code);
-        void CreateAsync(Product item);
-        void UpdateAsync(Product item);
+        Task<StatusDto> CreateAsync(Product item);
+        Task<StatusDto> UpdateAsync(Product item);
     }
 }
