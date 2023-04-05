@@ -21,10 +21,19 @@ namespace DomecChallange.Service.Services
         {
             _context = context;
         }
+
+        public async Task<bool> CheckExistAsync(string name, Guid? id = null)
+        {
+            return await GetAll()
+                    .AnyAsync(x =>
+                             (string.IsNullOrEmpty(name) || x.Name.ToLower().Trim() == name.ToLower().Trim()) &&
+                             (!id.HasValue || x.UniqueId != id));
+        }
         #region Methods
         public async Task<StatusDto<Product>> CreateAsync(Product item)
         {
             if (item == null) return new StatusDto<Product> { Status = StatusEnum.Error, Message = "Invalid Data" };
+            if (await CheckExistAsync(item.Name)) return new StatusDto<Product> { Status = StatusEnum.Exists , Message="Data Exists" };
             await _context.Products.AddAsync(item);
             await _context.SaveChangesAsync();
             return new StatusDto<Product> { Status = StatusEnum.Success, Message = "Data added successfully", ReturnId = item.UniqueId , ReturnModel = item };
@@ -40,6 +49,7 @@ namespace DomecChallange.Service.Services
             if (item == null) return new StatusDto<Product> { Status = StatusEnum.Error, Message = "Invalid Data" };
             var model = await GetAsync(item.UniqueId);
             if (model == null) return new StatusDto<Product> { Status = StatusEnum.Error, Message = "Invalid Data" };
+            if (await CheckExistAsync(item.Name,item.UniqueId)) return new StatusDto<Product> { Status = StatusEnum.Exists, Message = "Data Exists" };
             model = item;
             await _context.SaveChangesAsync();
             return new StatusDto<Product> { Status = StatusEnum.Success, Message = "Data added successfully", ReturnId = model.UniqueId };

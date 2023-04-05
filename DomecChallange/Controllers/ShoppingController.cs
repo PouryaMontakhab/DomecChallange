@@ -1,5 +1,6 @@
 ﻿using DomecChallange.Data.Context;
 using DomecChallange.Domain.Entities;
+using DomecChallange.Dtos.Enums;
 using DomecChallange.Dtos.ProdcutDtos;
 using DomecChallange.Service.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -30,7 +31,7 @@ namespace DomecChallange.Controllers
                 Quantity = a.Quantity,
             }).ToListAsync());
         }
-        [HttpGet("{id}",Name =nameof(GetProduct))]
+        [HttpGet("{id}", Name = nameof(GetProduct))]
         public async Task<ActionResult<ProductDto>> GetProduct(Guid uniqueId)
         {
             var product = await _productService.GetAsync(uniqueId);
@@ -53,6 +54,8 @@ namespace DomecChallange.Controllers
                 Name = item.Name,
                 Quantity = item.Quantity,
             });
+            if (result.Status != StatusEnum.Success)
+                throw new Exception(result.Message);
             var returnModel = new ProductDto
             {
                 UniqueId = result.ReturnModel.UniqueId,
@@ -60,7 +63,7 @@ namespace DomecChallange.Controllers
                 Name = result.ReturnModel.Name,
                 Quantity = result.ReturnModel.Quantity,
             };
-            return CreatedAtRoute(nameof(GetProduct), new {id = result.ReturnId },returnModel);
+            return CreatedAtRoute(nameof(GetProduct), new { id = result.ReturnId }, returnModel);
 
         }
     }
