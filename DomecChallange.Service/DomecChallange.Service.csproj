@@ -6,4 +6,9 @@
     <Nullable>disable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DomecChallange.Domain\DomecChallange.Domain.csproj" />
+    <ProjectReference Include="..\DomecChallange.Dtos\DomecChallange.Dtos.csproj" />
+  </ItemGroup>
+
 </Project>

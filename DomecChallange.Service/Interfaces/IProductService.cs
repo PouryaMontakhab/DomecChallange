@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DomecChallange.Domain.Entities;
+using DomecChallange.Dtos.ProdcutDtos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +10,10 @@ namespace DomecChallange.Service.Interfaces
 {
     public interface IProductService
     {
-        void AddAsync();
+        IQueryable<Product> GetAll();
+        Task<Product> GetAsync(Guid uniqueId);
+        Task<Product> GetAsync(int code);
+        void CreateAsync(Product item);
+        void UpdateAsync(Product item);
     }
 }
