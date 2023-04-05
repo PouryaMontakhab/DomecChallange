@@ -16,6 +16,7 @@ namespace DomecChallange.Service.Interfaces
         Task<Product> GetAsync(int code);
         Task<StatusDto<Product>> CreateAsync(Product item);
         Task<StatusDto<Product>> UpdateAsync(Product item);
+        Task<StatusDto<Product>> DeleteAsync(Guid uniqueId);
         Task<bool> CheckExistAsync(string name, Guid? id = null);
 
     }

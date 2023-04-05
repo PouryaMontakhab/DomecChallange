@@ -13,13 +13,16 @@ namespace DomecChallange.Controllers
     [ApiController]
     public class ShoppingController : ControllerBase
     {
+        #region Props
         private readonly IProductService _productService;
-
+        #endregion
+        #region Ctor
         public ShoppingController(IProductService productService)
         {
             _productService = productService;
         }
-
+        #endregion
+        #region Methods
         [HttpGet]
         public async Task<IActionResult> GetAllProducts()
         {
@@ -44,8 +47,6 @@ namespace DomecChallange.Controllers
                 Quantity = product.Quantity,
             });
         }
-
-
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] AddProductDto item)
         {
@@ -66,5 +67,34 @@ namespace DomecChallange.Controllers
             return CreatedAtRoute(nameof(GetProduct), new { id = result.ReturnId }, returnModel);
 
         }
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] EditProductDto item)
+        {
+            var result = await _productService.UpdateAsync(new Product
+            {
+                UniqueId = item.UniqueId,
+                Name = item.Name,
+                Quantity = item.Quantity,
+            });
+            if (result.Status != StatusEnum.Success)
+                throw new Exception(result.Message);
+            var returnModel = new ProductDto
+            {
+                UniqueId = result.ReturnModel.UniqueId,
+                Code = result.ReturnModel.Code,
+                Name = result.ReturnModel.Name,
+                Quantity = result.ReturnModel.Quantity,
+            };
+            return CreatedAtRoute(nameof(GetProduct), new { id = result.ReturnId }, returnModel);
+        }
+        [HttpDelete]
+        public async Task<IActionResult> Delete(Guid uniqueId)
+        {
+            var result = await _productService.DeleteAsync(uniqueId);
+            if (result.Status != StatusEnum.Success)
+                throw new Exception(result.Message);
+            return Ok();
+        }
+        #endregion
     }
 }

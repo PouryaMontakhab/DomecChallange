@@ -32,12 +32,23 @@ namespace DomecChallange.Service.Services
         #region Methods
         public async Task<StatusDto<Product>> CreateAsync(Product item)
         {
-            if (item == null) return new StatusDto<Product> { Status = StatusEnum.Error, Message = "Invalid Data" };
-            if (await CheckExistAsync(item.Name)) return new StatusDto<Product> { Status = StatusEnum.Exists , Message="Data Exists" };
+            if (item == null) return new StatusDto<Product> { Status = StatusEnum.Error, Message = "Invalid data" };
+            if (await CheckExistAsync(item.Name)) return new StatusDto<Product> { Status = StatusEnum.Exists , Message="Data exists" };
             await _context.Products.AddAsync(item);
             await _context.SaveChangesAsync();
             return new StatusDto<Product> { Status = StatusEnum.Success, Message = "Data added successfully", ReturnId = item.UniqueId , ReturnModel = item };
         }
+
+        public async Task<StatusDto<Product>> DeleteAsync(Guid uniqueId)
+        {
+            if (uniqueId == new Guid()) return new StatusDto<Product> { Status = StatusEnum.Error, Message = "Invalid data" };
+            var model = await GetAsync(uniqueId);
+            if (model == null) return new StatusDto<Product> { Status = StatusEnum.Error, Message = "Invalid data" };
+            _context.Products.Remove(model);
+            await _context.SaveChangesAsync();
+            return new StatusDto<Product> { Status = StatusEnum.Success, Message = "Data removed successfully"};
+        }
+
         public IQueryable<Product> GetAll(bool withAsNoTracking = true) => withAsNoTracking ? _context.Products.AsNoTracking() : _context.Products;
 
         public async Task<Product> GetAsync(Guid uniqueId) => await _context.Products.SingleOrDefaultAsync(p => p.UniqueId == uniqueId);
@@ -46,13 +57,15 @@ namespace DomecChallange.Service.Services
 
         public async Task<StatusDto<Product>> UpdateAsync(Product item)
         {
-            if (item == null) return new StatusDto<Product> { Status = StatusEnum.Error, Message = "Invalid Data" };
+            if (item == null) return new StatusDto<Product> { Status = StatusEnum.Error, Message = "Invalid data" };
             var model = await GetAsync(item.UniqueId);
-            if (model == null) return new StatusDto<Product> { Status = StatusEnum.Error, Message = "Invalid Data" };
-            if (await CheckExistAsync(item.Name,item.UniqueId)) return new StatusDto<Product> { Status = StatusEnum.Exists, Message = "Data Exists" };
-            model = item;
+            if (model == null) return new StatusDto<Product> { Status = StatusEnum.Error, Message = "Invalid data" };
+            if (await CheckExistAsync(item.Name,item.UniqueId)) return new StatusDto<Product> { Status = StatusEnum.Exists, Message = "Data exists" };
+            model.UniqueId = item.UniqueId;
+            model.Quantity = item.Quantity;
+            model.Name = item.Name;
             await _context.SaveChangesAsync();
-            return new StatusDto<Product> { Status = StatusEnum.Success, Message = "Data added successfully", ReturnId = model.UniqueId };
+            return new StatusDto<Product> { Status = StatusEnum.Success, Message = "Data updated successfully", ReturnId = model.UniqueId, ReturnModel = model };
         }
         
         #endregion
