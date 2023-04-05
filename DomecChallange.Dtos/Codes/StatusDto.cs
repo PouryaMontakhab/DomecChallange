@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace DomecChallange.Dtos.Codes
 {
-    public class StatusDto
+    public class StatusDto<T> where T : class
     {
         public string Message { get; set; }
         public dynamic ReturnId { get; set; }
-        public dynamic ReturnModel { get; set; }
+        public T ReturnModel { get; set; }
         public StatusEnum Status { get; set; }
     }
 }

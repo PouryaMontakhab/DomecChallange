@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DomecChallange.Data\DomecChallange.Data.csproj" />
+    <ProjectReference Include="..\DomecChallange.Service\DomecChallange.Service.csproj" />
   </ItemGroup>
 
 </Project>

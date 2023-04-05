@@ -22,12 +22,12 @@ namespace DomecChallange.Service.Services
             _context = context;
         }
         #region Methods
-        public async Task<StatusDto> CreateAsync(Product item)
+        public async Task<StatusDto<Product>> CreateAsync(Product item)
         {
-            if (item == null) return new StatusDto { Status = StatusEnum.Error, Message = "Invalid Data" };
+            if (item == null) return new StatusDto<Product> { Status = StatusEnum.Error, Message = "Invalid Data" };
             await _context.Products.AddAsync(item);
             await _context.SaveChangesAsync();
-            return new StatusDto { Status = StatusEnum.Success, Message = "Data added successfully", ReturnId = item.UniqueId };
+            return new StatusDto<Product> { Status = StatusEnum.Success, Message = "Data added successfully", ReturnId = item.UniqueId , ReturnModel = item };
         }
         public IQueryable<Product> GetAll(bool withAsNoTracking = true) => withAsNoTracking ? _context.Products.AsNoTracking() : _context.Products;
 
@@ -35,14 +35,14 @@ namespace DomecChallange.Service.Services
 
         public async Task<Product> GetAsync(int code) => await _context.Products.SingleOrDefaultAsync(p => p.Code == code);
 
-        public async Task<StatusDto> UpdateAsync(Product item)
+        public async Task<StatusDto<Product>> UpdateAsync(Product item)
         {
-            if (item == null) return new StatusDto { Status = StatusEnum.Error, Message = "Invalid Data" };
+            if (item == null) return new StatusDto<Product> { Status = StatusEnum.Error, Message = "Invalid Data" };
             var model = await GetAsync(item.UniqueId);
-            if (model == null) return new StatusDto { Status = StatusEnum.Error, Message = "Invalid Data" };
+            if (model == null) return new StatusDto<Product> { Status = StatusEnum.Error, Message = "Invalid Data" };
             model = item;
             await _context.SaveChangesAsync();
-            return new StatusDto { Status = StatusEnum.Success, Message = "Data added successfully", ReturnId = model.UniqueId };
+            return new StatusDto<Product> { Status = StatusEnum.Success, Message = "Data added successfully", ReturnId = model.UniqueId };
         }
         
         #endregion

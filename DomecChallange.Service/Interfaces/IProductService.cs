@@ -14,7 +14,7 @@ namespace DomecChallange.Service.Interfaces
         IQueryable<Product> GetAll(bool withAsNoTracking = true);
         Task<Product> GetAsync(Guid uniqueId);
         Task<Product> GetAsync(int code);
-        Task<StatusDto> CreateAsync(Product item);
-        Task<StatusDto> UpdateAsync(Product item);
+        Task<StatusDto<Product>> CreateAsync(Product item);
+        Task<StatusDto<Product>> UpdateAsync(Product item);
     }
 }
