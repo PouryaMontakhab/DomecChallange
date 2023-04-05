@@ -1,4 +1,5 @@
-﻿using DomecChallange.Domain.Entities;
+﻿using DomecChallange.Data.Context;
+using DomecChallange.Domain.Entities;
 using DomecChallange.Dtos.Codes;
 using DomecChallange.Dtos.Enums;
 using DomecChallange.Service.Interfaces;
@@ -14,20 +15,25 @@ namespace DomecChallange.Service.Services
     public class ProductService : IProductService
     {
         #region Props
-        private readonly DbSet<Product> _product;
+        private readonly DomecChallangeDbContext _context;
         #endregion
+        public ProductService(DomecChallangeDbContext context)
+        {
+            _context = context;
+        }
         #region Methods
         public async Task<StatusDto> CreateAsync(Product item)
         {
             if (item == null) return new StatusDto { Status = StatusEnum.Error, Message = "Invalid Data" };
-            await _product.AddAsync(item);
-            return new StatusDto { Status = StatusEnum.Success, Message = "Data added successfully" };
+            await _context.Products.AddAsync(item);
+            await _context.SaveChangesAsync();
+            return new StatusDto { Status = StatusEnum.Success, Message = "Data added successfully", ReturnId = item.UniqueId };
         }
-        public IQueryable<Product> GetAll(bool withAsNoTracking = true) => withAsNoTracking ? _product.AsNoTracking() : _product;
+        public IQueryable<Product> GetAll(bool withAsNoTracking = true) => withAsNoTracking ? _context.Products.AsNoTracking() : _context.Products;
 
-        public async Task<Product> GetAsync(Guid uniqueId) => await _product.SingleOrDefaultAsync(p => p.UniqueId == uniqueId);
+        public async Task<Product> GetAsync(Guid uniqueId) => await _context.Products.SingleOrDefaultAsync(p => p.UniqueId == uniqueId);
 
-        public async Task<Product> GetAsync(int code) => await _product.SingleOrDefaultAsync(p => p.Code == code);
+        public async Task<Product> GetAsync(int code) => await _context.Products.SingleOrDefaultAsync(p => p.Code == code);
 
         public async Task<StatusDto> UpdateAsync(Product item)
         {
@@ -35,8 +41,10 @@ namespace DomecChallange.Service.Services
             var model = await GetAsync(item.UniqueId);
             if (model == null) return new StatusDto { Status = StatusEnum.Error, Message = "Invalid Data" };
             model = item;
+            await _context.SaveChangesAsync();
             return new StatusDto { Status = StatusEnum.Success, Message = "Data added successfully", ReturnId = model.UniqueId };
         }
+        
         #endregion
     }
 }

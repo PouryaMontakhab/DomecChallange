@@ -9,6 +9,7 @@
 		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.15" />
 	</ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DomecChallange.Data\DomecChallange.Data.csproj" />
     <ProjectReference Include="..\DomecChallange.Domain\DomecChallange.Domain.csproj" />
     <ProjectReference Include="..\DomecChallange.Dtos\DomecChallange.Dtos.csproj" />
   </ItemGroup>
