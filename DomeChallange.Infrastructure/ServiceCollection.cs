@@ -30,6 +30,8 @@ namespace DomeChallange.Infrastructure
             services.AddScoped<IProductService, ProductService>();
             services.AddAutoMapper(typeof(ProfileMapper).Assembly);
 
+            var user = new Dictionary<string, string> { { "mirco", "mirco123" }, { "simone", "simone123" } };
+            services.AddSingleton<IUserService>(new UserService(user));
             services.AddAuthentication(config =>
             {
                 config.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
