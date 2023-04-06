@@ -29,7 +29,6 @@ namespace DomecChallange.Service.Services
         {
             if (item == null) return new StatusDto<Product> { Status = StatusEnum.Error, Message = "Invalid data" };
             if (await CheckExistAsync(item.Name)) return new StatusDto<Product> { Status = StatusEnum.Exists , Message="Data exists" };
-            //if(!IsValidQuantity(item.Quantity)) return new StatusDto<Product> { Status = StatusEnum.failure, Message = "Quantity value is invalid" };
             await _context.Products.AddAsync(item);
             await _context.SaveChangesAsync();
             return new StatusDto<Product> { Status = StatusEnum.Success, Message = "Data added successfully", ReturnId = item.UniqueId , ReturnModel = item };
@@ -37,7 +36,6 @@ namespace DomecChallange.Service.Services
         public async Task<StatusDto<Product>> UpdateAsync(Product item)
         {
             if (item == null) return new StatusDto<Product> { Status = StatusEnum.Error, Message = "Invalid data" };
-            //if (!IsValidQuantity(item.Quantity)) return new StatusDto<Product> { Status = StatusEnum.failure, Message = "Quantity value is invalid" };
             var model = await GetAsync(item.UniqueId);
             if (model == null) return new StatusDto<Product> { Status = StatusEnum.Error, Message = "Invalid data" };
             if (await CheckExistAsync(item.Name, item.UniqueId)) return new StatusDto<Product> { Status = StatusEnum.Exists, Message = "Data exists" };

@@ -50,6 +50,20 @@ namespace DomecChallange.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] AddProductDto item)
         {
+            var validationMessage = _productService.CheckingEntryData(new EditProductDto
+            {
+                Name = item.Name,
+                Quantity = item.Quantity,
+            });
+            if (!validationMessage.IsValid)
+            {
+                string alerts = string.Join(",", ModelState.Values
+                                         .SelectMany(x => x.Errors)
+                                         .Select(x => x.ErrorMessage));
+                alerts += validationMessage.Message;
+                ModelState.AddModelError("", alerts);
+                throw new Exception(alerts);
+            }
             var result = await _productService.CreateAsync(new Product
             {
                 Name = item.Name,
@@ -70,6 +84,16 @@ namespace DomecChallange.Controllers
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] EditProductDto item)
         {
+            var validationMessage = _productService.CheckingEntryData(item);
+            if (!validationMessage.IsValid)
+            {
+                string alerts = string.Join(",", ModelState.Values
+                                         .SelectMany(x => x.Errors)
+                                         .Select(x => x.ErrorMessage));
+                alerts += validationMessage.Message;
+                ModelState.AddModelError("", alerts);
+                throw new Exception(alerts);
+            }
             var result = await _productService.UpdateAsync(new Product
             {
                 UniqueId = item.UniqueId,
