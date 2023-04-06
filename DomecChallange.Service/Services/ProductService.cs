@@ -2,6 +2,7 @@
 using DomecChallange.Domain.Entities;
 using DomecChallange.Dtos.Codes;
 using DomecChallange.Dtos.Enums;
+using DomecChallange.Dtos.ProdcutDtos;
 using DomecChallange.Service.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -28,10 +29,23 @@ namespace DomecChallange.Service.Services
         {
             if (item == null) return new StatusDto<Product> { Status = StatusEnum.Error, Message = "Invalid data" };
             if (await CheckExistAsync(item.Name)) return new StatusDto<Product> { Status = StatusEnum.Exists , Message="Data exists" };
-            if(!IsValidQuantity(item.Quantity)) return new StatusDto<Product> { Status = StatusEnum.failure, Message = "Quantity value is invalid" };
+            //if(!IsValidQuantity(item.Quantity)) return new StatusDto<Product> { Status = StatusEnum.failure, Message = "Quantity value is invalid" };
             await _context.Products.AddAsync(item);
             await _context.SaveChangesAsync();
             return new StatusDto<Product> { Status = StatusEnum.Success, Message = "Data added successfully", ReturnId = item.UniqueId , ReturnModel = item };
+        }
+        public async Task<StatusDto<Product>> UpdateAsync(Product item)
+        {
+            if (item == null) return new StatusDto<Product> { Status = StatusEnum.Error, Message = "Invalid data" };
+            //if (!IsValidQuantity(item.Quantity)) return new StatusDto<Product> { Status = StatusEnum.failure, Message = "Quantity value is invalid" };
+            var model = await GetAsync(item.UniqueId);
+            if (model == null) return new StatusDto<Product> { Status = StatusEnum.Error, Message = "Invalid data" };
+            if (await CheckExistAsync(item.Name, item.UniqueId)) return new StatusDto<Product> { Status = StatusEnum.Exists, Message = "Data exists" };
+            model.UniqueId = item.UniqueId;
+            model.Quantity = item.Quantity;
+            model.Name = item.Name;
+            await _context.SaveChangesAsync();
+            return new StatusDto<Product> { Status = StatusEnum.Success, Message = "Data updated successfully", ReturnId = model.UniqueId, ReturnModel = model };
         }
         public async Task<StatusDto<Product>> DeleteAsync(Guid uniqueId)
         {
@@ -46,19 +60,6 @@ namespace DomecChallange.Service.Services
         public async Task<Product> GetAsync(Guid uniqueId) => await _context.Products.SingleOrDefaultAsync(p => p.UniqueId == uniqueId);
         public async Task<Product> GetAsync(int code) => await _context.Products.SingleOrDefaultAsync(p => p.Code == code);
         public async Task<Product> GetAsync(string name) => await _context.Products.SingleOrDefaultAsync(p => p.Name == name);
-        public async Task<StatusDto<Product>> UpdateAsync(Product item)
-        {
-            if (item == null) return new StatusDto<Product> { Status = StatusEnum.Error, Message = "Invalid data" };
-            if (!IsValidQuantity(item.Quantity)) return new StatusDto<Product> { Status = StatusEnum.failure, Message = "Quantity value is invalid" };
-            var model = await GetAsync(item.UniqueId);
-            if (model == null) return new StatusDto<Product> { Status = StatusEnum.Error, Message = "Invalid data" };
-            if (await CheckExistAsync(item.Name,item.UniqueId)) return new StatusDto<Product> { Status = StatusEnum.Exists, Message = "Data exists" };
-            model.UniqueId = item.UniqueId;
-            model.Quantity = item.Quantity;
-            model.Name = item.Name;
-            await _context.SaveChangesAsync();
-            return new StatusDto<Product> { Status = StatusEnum.Success, Message = "Data updated successfully", ReturnId = model.UniqueId, ReturnModel = model };
-        }
         public async Task<bool> CheckExistAsync(string name, Guid? id = null)
         {
             return await GetAll()
@@ -67,6 +68,22 @@ namespace DomecChallange.Service.Services
                              (!id.HasValue || x.UniqueId != id));
         }
         private bool IsValidQuantity(int quantity) => quantity >= 1;
+
+        public ValidationMessageDto CheckingEntryData(EditProductDto item)
+        {
+            var errorMessage = new ValidationMessageDto();
+            if (!IsValidQuantity(item.Quantity))
+            {
+                errorMessage.IsValid = false;
+                errorMessage.AppendString("Quantity must be greather than zero");
+            }
+            if (string.IsNullOrWhiteSpace(item.Name))
+            {
+                errorMessage.IsValid = false;
+                errorMessage.AppendString("Product name must not be empty");
+            }
+            return errorMessage;
+        }
         #endregion
     }
 }

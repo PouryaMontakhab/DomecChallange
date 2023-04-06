@@ -19,6 +19,8 @@ namespace DomecChallange.Service.Interfaces
         Task<StatusDto<Product>> UpdateAsync(Product item);
         Task<StatusDto<Product>> DeleteAsync(Guid uniqueId);
         Task<bool> CheckExistAsync(string name, Guid? id = null);
+        ValidationMessageDto CheckingEntryData(EditProductDto item);
+
 
     }
 }
