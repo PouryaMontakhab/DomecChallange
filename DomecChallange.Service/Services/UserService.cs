@@ -1,5 +1,6 @@
 ﻿using DomecChallange.Domain.Entities;
 using DomecChallange.Dtos.Codes;
+using DomecChallange.Dtos.Enums;
 using DomecChallange.Service.Interfaces;
 
 namespace DomecChallange.Service.Services
@@ -14,7 +15,7 @@ namespace DomecChallange.Service.Services
             => credentials.ToList().ForEach(c => _user.Add(c.Key.ToLower(), (c.Value, new User(c.Value))));
         #endregion
         #region Methods
-        public async Task<StatusDto<User>> ValidateCredentials(string userName, string password, out User user)
+        public Task<StatusDto<User>> ValidateCredentials(string userName, string password, out User user)
         {
             user = null;
             var key = userName.ToLower();
@@ -23,10 +24,10 @@ namespace DomecChallange.Service.Services
                 if(password == _user[key].password)
                 {
                     user = _user[key].user;
-                    return await Task.FromResult(new StatusDto<User> { Message="Signin was completed" });
+                    return Task.FromResult(new StatusDto<User> {Status = StatusEnum.Success, Message="Signin was completed" });
                 }
             }
-            return await Task.FromResult(new StatusDto<User> { Message = "Signin was not completed" });
+            return Task.FromResult(new StatusDto<User> { Status = StatusEnum.Error, Message = "Signin was not completed" });
         }
         #endregion
     }

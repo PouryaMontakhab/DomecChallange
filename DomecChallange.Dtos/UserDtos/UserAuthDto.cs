@@ -4,6 +4,6 @@
     {
         public string UserName { get; set; }
         public string BearerToken { get; set; }
-        public List<UserCliam> Claims { get; set; } = new();
+        public List<UserClaimDto> Claims { get; set; } = new();
     }
 }

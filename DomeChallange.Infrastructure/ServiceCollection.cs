@@ -9,6 +9,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Net.Http.Headers;
+using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +25,30 @@ namespace DomeChallange.Infrastructure
         {
             services.AddControllers();
             services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "DomecChallange", Version = "v1" });
+                var securityScheme = new OpenApiSecurityScheme
+                {
+                    Name = "JWT Authentication",
+                    Description = "Enter JWT token.",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    BearerFormat = "JWT",
+                    Reference = new OpenApiReference
+                    {
+                        Id = JwtBearerDefaults.AuthenticationScheme,
+                        Type = ReferenceType.SecurityScheme
+                    }
+                };
+
+                c.AddSecurityDefinition(securityScheme.Reference.Id, securityScheme);
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                    {
+                        { securityScheme, new string[] { } }
+                    });
+            });
             services.AddDbContext<DomecChallangeDbContext>(options =>
                 options.UseInMemoryDatabase(databaseName: "DomecChallangeSystemContext"));
             services.AddScoped<DomecChallangeDbContext>();
@@ -32,6 +57,7 @@ namespace DomeChallange.Infrastructure
 
             var user = new Dictionary<string, string> { { "mirco", "mirco123" }, { "simone", "simone123" } };
             services.AddSingleton<IUserService>(new UserService(user));
+            var key = Encoding.ASCII.GetBytes(TokenConfigs.Secret);
             services.AddAuthentication(config =>
             {
                 config.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -44,9 +70,9 @@ namespace DomeChallange.Infrastructure
                 jwt.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890+-*/~!@#$%&*();:'")), // *this is just for demo purpose, we must not use this approach in production level*
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = false,
-                    ValidateAudience = false,   
+                    ValidateAudience = false,
                 };
             });
 
