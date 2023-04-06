@@ -6,8 +6,5 @@ using System.Threading.Tasks;
 
 namespace DomecChallange.Domain.Entities
 {
-    public class User
-    {
-        public string UserName { get; set; }
-    }
+    public record User(string UserName){}
 }

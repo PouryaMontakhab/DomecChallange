@@ -28,10 +28,10 @@ namespace DomecChallange.Service.Services
         public async Task<StatusDto<Product>> CreateAsync(Product item)
         {
             if (item == null) return new StatusDto<Product> { Status = StatusEnum.Error, Message = "Invalid data" };
-            if (await CheckExistAsync(item.Name)) return new StatusDto<Product> { Status = StatusEnum.Exists , Message="Data exists" };
+            if (await CheckExistAsync(item.Name)) return new StatusDto<Product> { Status = StatusEnum.Exists, Message = "Data exists" };
             await _context.Products.AddAsync(item);
             await _context.SaveChangesAsync();
-            return new StatusDto<Product> { Status = StatusEnum.Success, Message = "Data added successfully", ReturnId = item.UniqueId , ReturnModel = item };
+            return new StatusDto<Product> { Status = StatusEnum.Success, Message = "Data added successfully", ReturnId = item.UniqueId, ReturnModel = item };
         }
         public async Task<StatusDto<Product>> UpdateAsync(Product item)
         {
@@ -52,7 +52,7 @@ namespace DomecChallange.Service.Services
             if (model == null) return new StatusDto<Product> { Status = StatusEnum.Error, Message = "Invalid data" };
             _context.Products.Remove(model);
             await _context.SaveChangesAsync();
-            return new StatusDto<Product> { Status = StatusEnum.Success, Message = "Data removed successfully"};
+            return new StatusDto<Product> { Status = StatusEnum.Success, Message = "Data removed successfully" };
         }
         public IQueryable<Product> GetAll(bool withAsNoTracking = true) => withAsNoTracking ? _context.Products.AsNoTracking() : _context.Products;
         public async Task<Product> GetAsync(Guid uniqueId) => await _context.Products.SingleOrDefaultAsync(p => p.UniqueId == uniqueId);
