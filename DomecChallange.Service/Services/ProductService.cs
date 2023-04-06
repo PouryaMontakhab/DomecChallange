@@ -54,7 +54,10 @@ namespace DomecChallange.Service.Services
             await _context.SaveChangesAsync();
             return new StatusDto<Product> { Status = StatusEnum.Success, Message = "Data removed successfully" };
         }
-        public IQueryable<Product> GetAll(bool withAsNoTracking = true) => withAsNoTracking ? _context.Products.AsNoTracking() : _context.Products;
+        public IQueryable<Product> GetAll(PaginationFilterDto filter, bool withAsNoTracking = true)
+            => withAsNoTracking ?
+            _context.Products.AsNoTracking().Skip((filter.PageNumber - 1) * filter.PageSize).Take(filter.PageSize)
+            : _context.Products.Skip((filter.PageNumber - 1) * filter.PageSize).Take(filter.PageSize);
         public async Task<Product> GetAsync(Guid uniqueId) => await _context.Products.SingleOrDefaultAsync(p => p.UniqueId == uniqueId);
         public async Task<Product> GetAsync(int code) => await _context.Products.SingleOrDefaultAsync(p => p.Code == code);
         public async Task<Product> GetAsync(string name) => await _context.Products.SingleOrDefaultAsync(p => p.Name == name);
