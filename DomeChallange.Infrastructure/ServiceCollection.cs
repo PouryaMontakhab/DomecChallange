@@ -3,9 +3,11 @@ using DomecChallange.Mapper;
 using DomecChallange.Service.Interfaces;
 using DomecChallange.Service.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -19,6 +21,9 @@ namespace DomeChallange.Infrastructure
     {
         public static void ConfigureServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddControllers();
+            services.AddEndpointsApiExplorer();
+            services.AddSwaggerGen();
             services.AddDbContext<DomecChallangeDbContext>(options =>
                 options.UseInMemoryDatabase(databaseName: "DomecChallangeSystemContext"));
             services.AddScoped<DomecChallangeDbContext>();
@@ -44,6 +49,19 @@ namespace DomeChallange.Infrastructure
             });
 
 
+        }
+        public static void ConfigureMiddlewares(this WebApplication app)
+        {
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
+            app.UseHttpsRedirection();
+            app.UseAuthentication();
+            app.UseAuthorization();
+            app.MapControllers();
+            app.Run();
         }
     }
 }
