@@ -63,8 +63,9 @@ namespace DomecChallange.Service.Services
         public async Task<Product> GetAsync(string name) => await _context.Products.SingleOrDefaultAsync(p => p.Name == name);
         public async Task<bool> CheckExistAsync(string name, Guid? id = null)
         {
-            return await GetAll()
-                    .AnyAsync(x =>
+            return await _context.Products
+                .AsNoTracking()
+                .AnyAsync(x =>
                              (string.IsNullOrEmpty(name) || x.Name.ToLower().Trim() == name.ToLower().Trim()) &&
                              (!id.HasValue || x.UniqueId != id));
         }

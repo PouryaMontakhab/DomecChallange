@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using DomecChallange.Data.Context;
 using DomecChallange.Domain.Entities;
+using DomecChallange.Dtos.Codes;
 using DomecChallange.Dtos.Enums;
 using DomecChallange.Dtos.ProdcutDtos;
 using DomecChallange.Service.Interfaces;
@@ -32,8 +33,8 @@ namespace DomecChallange.Controllers
         #endregion
         #region Methods
         [HttpGet]
-        public async Task<IActionResult> GetAllProducts() =>
-            Ok(await _productService.GetAll().ProjectTo<ProductDto>(_mapper.ConfigurationProvider).ToListAsync());
+        public async Task<IActionResult> GetAllProducts([FromQuery]PaginationFilterDto filter) =>
+            Ok(await _productService.GetAll(filter).ProjectTo<ProductDto>(_mapper.ConfigurationProvider).ToListAsync());
 
         [HttpGet("{name}", Name = nameof(GetProductByName))]
         public async Task<ActionResult<ProductDto>> GetProductByName(string name)
