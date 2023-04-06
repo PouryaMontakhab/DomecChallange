@@ -5,6 +5,7 @@ using DomecChallange.Domain.Entities;
 using DomecChallange.Dtos.Enums;
 using DomecChallange.Dtos.ProdcutDtos;
 using DomecChallange.Service.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@ namespace DomecChallange.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ShoppingController : ControllerBase
     {
         #region Props
