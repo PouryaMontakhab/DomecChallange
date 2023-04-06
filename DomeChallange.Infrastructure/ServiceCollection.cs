@@ -2,9 +2,11 @@
 using DomecChallange.Mapper;
 using DomecChallange.Service.Interfaces;
 using DomecChallange.Service.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +24,26 @@ namespace DomeChallange.Infrastructure
             services.AddScoped<DomecChallangeDbContext>();
             services.AddScoped<IProductService, ProductService>();
             services.AddAutoMapper(typeof(ProfileMapper).Assembly);
+
+            services.AddAuthentication(config =>
+            {
+                config.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                config.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+                config.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(jwt =>
+            {
+                jwt.RequireHttpsMetadata = false;
+                jwt.SaveToken = true;
+                jwt.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890+-*/~!@#$%&*();:'")), // *this is just for demo purpose, we must not use this approach in production level*
+                    ValidateIssuer = false,
+                    ValidateAudience = false,   
+                };
+            });
+
+
         }
     }
 }
