@@ -1,4 +1,5 @@
 ﻿using DomecChallange.Data.Context;
+using DomecChallange.Mapper;
 using DomecChallange.Service.Interfaces;
 using DomecChallange.Service.Services;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ namespace DomeChallange.Infrastructure
                 options.UseInMemoryDatabase(databaseName: "DomecChallangeSystemContext"));
             services.AddScoped<DomecChallangeDbContext>();
             services.AddScoped<IProductService, ProductService>();
+            services.AddAutoMapper(typeof(ProfileMapper).Assembly);
         }
     }
 }
