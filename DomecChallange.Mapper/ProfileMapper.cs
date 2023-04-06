@@ -14,10 +14,10 @@ namespace DomecChallange.Mapper
         public ProfileMapper()
         {
             CreateMap<Product, EditProductDto>();
+            CreateMap<Product, ProductDto>();
             CreateMap<EditProductDto, Product>().ForMember(x => x.Code, opt => opt.Ignore());
             CreateMap<Product, AddProductDto>().ReverseMap();
-            CreateMap<EditProductDto, AddProductDto>();
-            CreateMap<AddProductDto, EditProductDto>();
+            CreateMap<EditProductDto, AddProductDto>().ReverseMap();
         }
     }
 }
