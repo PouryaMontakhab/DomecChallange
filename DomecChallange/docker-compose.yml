@@ -1,7 +1,7 @@
 ﻿version: '3.4'
 services:
   webapp:
-    image: domec-challange
+    image: pouryamontakhabi/domec-challange:0.0.1
     container_name: domec
     ports:
       - "44311:44311"
