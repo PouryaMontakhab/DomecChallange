@@ -7,7 +7,7 @@ The project is composed of two controllers.
   
   You can run project with docker run command or docker-compose : 
     
-    <h6>docker run</h6> => docker run --rm -it -p 44311:44311 -e ASPNETCORE_URLS="https://+:44311;http://+:80" -e ASPNETCORE_ENVIRONMENT=Development -e ASPNETCORE_HTTPS_PORT=44311 -e ASPNETCORE_Kestrel__Certificates__Default__Password="admin@123" -e ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx -v %USERPROFILE%\.aspnet\https:/https/ domec-challange
+    docker run => docker run --rm -it -p 44311:44311 -e ASPNETCORE_URLS="https://+:44311;http://+:80" -e ASPNETCORE_ENVIRONMENT=Development -e ASPNETCORE_HTTPS_PORT=44311 -e ASPNETCORE_Kestrel__Certificates__Default__Password="admin@123" -e ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx -v %USERPROFILE%\.aspnet\https:/https/ domec-challange
     
-    <h6>docker compose</h6> => docker-compose -f "docker-compose" up -d
+    docker compose => docker-compose -f "docker-compose" up -d
     
