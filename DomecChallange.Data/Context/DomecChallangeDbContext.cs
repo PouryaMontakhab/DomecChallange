@@ -18,6 +18,7 @@ namespace DomecChallange.Data.Context
         public DomecChallangeDbContext(DbContextOptions<DomecChallangeDbContext> options) : base(options)
         {
         }
+       
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Product>(code =>
